@@ -75,12 +75,33 @@ def _format_standalone_summaries(summaries: dict) -> str:
     return "\n\n".join(lines)
 
 
+def _render_extra_sections_markdown(result: AIAnalysisResult) -> list:
+    """渲染额外实时数据板块（天气/金价/GitHub/微博）为 Markdown 行列表"""
+    lines = []
+
+    if result.weather_raw:
+        lines.extend(["**📍 珠海金湾区天气**", result.weather_raw, ""])
+
+    if result.gold_raw:
+        lines.extend(["**🪙 今日金价**", result.gold_raw, ""])
+
+    if result.github_raw:
+        lines.extend(["**🚁 GitHub 无人机热门项目**", result.github_raw, ""])
+
+    if result.weibo_raw:
+        lines.extend(["**📱 微博实时热搜**", result.weibo_raw, ""])
+
+    return lines
+
+
 def render_ai_analysis_markdown(result: AIAnalysisResult) -> str:
     """渲染为通用 Markdown 格式（Telegram、企业微信、ntfy、Bark、Slack）"""
     if not result.success:
         return f"⚠️ AI 分析失败: {result.error}"
 
     lines = ["**✨ AI 热点分析**", ""]
+
+    lines.extend(_render_extra_sections_markdown(result))
 
     if result.core_trends:
         lines.extend(["**核心热点态势**", _format_list_content(result.core_trends), ""])
@@ -118,6 +139,8 @@ def render_ai_analysis_feishu(result: AIAnalysisResult) -> str:
 
     lines = ["**✨ AI 热点分析**", ""]
 
+    lines.extend(_render_extra_sections_markdown(result))
+
     if result.core_trends:
         lines.extend(["**核心热点态势**", _format_list_content(result.core_trends), ""])
 
@@ -153,6 +176,15 @@ def render_ai_analysis_dingtalk(result: AIAnalysisResult) -> str:
         return f"⚠️ AI 分析失败: {result.error}"
 
     lines = ["### ✨ AI 热点分析", ""]
+
+    if result.weather_raw:
+        lines.extend(["#### 📍 珠海金湾区天气", result.weather_raw, ""])
+    if result.gold_raw:
+        lines.extend(["#### 🪙 今日金价", result.gold_raw, ""])
+    if result.github_raw:
+        lines.extend(["#### 🚁 GitHub 无人机热门项目", result.github_raw, ""])
+    if result.weibo_raw:
+        lines.extend(["#### 📱 微博实时热搜", result.weibo_raw, ""])
 
     if result.core_trends:
         lines.extend(
@@ -197,6 +229,22 @@ def render_ai_analysis_html(result: AIAnalysisResult) -> str:
         )
 
     html_parts = ['<div class="ai-analysis">', "<h3>✨ AI 热点分析</h3>"]
+
+    # 额外实时数据板块
+    for icon, title, raw in [
+        ("📍", "珠海金湾区天气", result.weather_raw),
+        ("🪙", "今日金价", result.gold_raw),
+        ("🚁", "GitHub 无人机热门项目", result.github_raw),
+        ("📱", "微博实时热搜", result.weibo_raw),
+    ]:
+        if raw:
+            content_html = _escape_html(raw).replace("\n", "<br>")
+            html_parts.extend([
+                '<div class="ai-section">',
+                f"<h4>{icon} {title}</h4>",
+                f'<div class="ai-content">{content_html}</div>',
+                "</div>",
+            ])
 
     if result.core_trends:
         content = _format_list_content(result.core_trends)
@@ -282,6 +330,15 @@ def render_ai_analysis_plain(result: AIAnalysisResult) -> str:
 
     lines = ["【✨ AI 热点分析】", ""]
 
+    if result.weather_raw:
+        lines.extend(["[📍 珠海金湾区天气]", result.weather_raw, ""])
+    if result.gold_raw:
+        lines.extend(["[🪙 今日金价]", result.gold_raw, ""])
+    if result.github_raw:
+        lines.extend(["[🚁 GitHub 无人机项目]", result.github_raw, ""])
+    if result.weibo_raw:
+        lines.extend(["[📱 微博实时热搜]", result.weibo_raw, ""])
+
     if result.core_trends:
         lines.extend(["[核心热点态势]", _format_list_content(result.core_trends), ""])
 
@@ -340,6 +397,21 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
                     <div class="ai-section-header">
                         <div class="ai-section-title">✨ AI 热点分析</div>
                         <span class="ai-section-badge">AI</span>
+                    </div>"""
+
+    # 额外实时数据板块
+    for icon, title, raw in [
+        ("📍", "珠海金湾区天气", result.weather_raw),
+        ("🪙", "今日金价", result.gold_raw),
+        ("🚁", "GitHub 无人机热门项目", result.github_raw),
+        ("📱", "微博实时热搜", result.weibo_raw),
+    ]:
+        if raw:
+            content_html = _escape_html(raw).replace("\n", "<br>")
+            ai_html += f"""
+                    <div class="ai-block">
+                        <div class="ai-block-title">{icon} {title}</div>
+                        <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
     if result.core_trends:

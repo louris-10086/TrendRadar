@@ -25,6 +25,12 @@ class AIAnalysisResult:
     outlook_strategy: str = ""           # 研判与策略建议
     standalone_summaries: Dict[str, str] = field(default_factory=dict)  # 独立展示区概括 {源ID: 概括}
 
+    # 额外实时数据（直接展示，非 AI 生成）
+    weather_raw: str = ""                # 珠海金湾区实时天气
+    gold_raw: str = ""                   # 今日金价（金店/银行）
+    github_raw: str = ""                 # GitHub 无人机热门开源项目
+    weibo_raw: str = ""                  # 微博实时热搜
+
     # 基础元数据
     raw_response: str = ""               # 原始响应
     success: bool = False                # 是否成功
@@ -123,6 +129,7 @@ class AIAnalyzer:
         platforms: Optional[List[str]] = None,
         keywords: Optional[List[str]] = None,
         standalone_data: Optional[Dict] = None,
+        extra_data: Optional[Dict] = None,
     ) -> AIAnalysisResult:
         """
         执行 AI 分析
@@ -203,6 +210,10 @@ class AIAnalyzer:
             standalone_content = self._prepare_standalone_content(standalone_data)
         user_prompt = user_prompt.replace("{standalone_content}", standalone_content)
 
+        # 构建额外数据内容（天气/金价/GitHub/微博）
+        extra_content = self._prepare_extra_content(extra_data)
+        user_prompt = user_prompt.replace("{extra_data}", extra_content)
+
         if self.debug:
             print("\n" + "=" * 80)
             print("[AI 调试] 发送给 AI 的完整提示词")
@@ -233,6 +244,14 @@ class AIAnalyzer:
             result.rss_count = rss_total
             result.analyzed_news = analyzed_count
             result.max_news_limit = self.max_news
+
+            # 填充额外实时数据（用于直接展示）
+            if extra_data:
+                result.weather_raw = extra_data.get("weather", "")
+                result.gold_raw = extra_data.get("gold", "")
+                result.github_raw = extra_data.get("github_drone", "")
+                result.weibo_raw = extra_data.get("weibo", "")
+
             return result
         except Exception as e:
             error_type = type(e).__name__
@@ -502,6 +521,31 @@ class AIAnalyzer:
             lines.append("")
 
         return "\n".join(lines)
+
+    def _prepare_extra_content(self, extra_data: Optional[Dict]) -> str:
+        """将额外数据（天气/金价/GitHub/微博）格式化为 AI prompt 中的文本"""
+        if not extra_data:
+            return "（无额外数据）"
+
+        sections = []
+
+        weather = extra_data.get("weather", "").strip()
+        if weather:
+            sections.append(f"### 珠海金湾区实时天气\n{weather}")
+
+        gold = extra_data.get("gold", "").strip()
+        if gold:
+            sections.append(f"### 今日金价\n{gold}")
+
+        github = extra_data.get("github_drone", "").strip()
+        if github:
+            sections.append(f"### GitHub 无人机热门项目（按 Star 数排名）\n{github}")
+
+        weibo = extra_data.get("weibo", "").strip()
+        if weibo:
+            sections.append(f"### 微博实时热搜 TOP{len(weibo.splitlines())}\n{weibo}")
+
+        return "\n\n".join(sections) if sections else "（无额外数据）"
 
     def _parse_response(self, response: str) -> AIAnalysisResult:
         """解析 AI 响应"""

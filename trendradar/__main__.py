@@ -24,6 +24,7 @@ from trendradar.storage import convert_crawl_results_to_news_data
 from trendradar.utils.time import DEFAULT_TIMEZONE, is_within_days, calculate_days_old
 from trendradar.ai import AIAnalyzer, AIAnalysisResult
 from trendradar.core.scheduler import ResolvedSchedule
+from trendradar.extra import fetch_all_extra_data
 
 
 def _parse_version(version_str: str) -> Tuple[int, int, int]:
@@ -455,6 +456,7 @@ class NewsAnalyzer:
         current_results: Optional[Dict] = None,
         schedule: ResolvedSchedule = None,
         standalone_data: Optional[Dict] = None,
+        extra_data: Optional[Dict] = None,
     ) -> Optional[AIAnalysisResult]:
         """执行 AI 分析"""
         analysis_config = self.ctx.config.get("AI_ANALYSIS", {})
@@ -539,6 +541,7 @@ class NewsAnalyzer:
                 platforms=platforms,
                 keywords=keywords,
                 standalone_data=standalone_data,
+                extra_data=extra_data,
             )
 
             # 设置 AI 分析使用的模式
@@ -798,6 +801,7 @@ class NewsAnalyzer:
         rss_new_items: Optional[List[Dict]] = None,
         standalone_data: Optional[Dict] = None,
         schedule: ResolvedSchedule = None,
+        extra_data: Optional[Dict] = None,
     ) -> Tuple[List[Dict], Optional[str], Optional[AIAnalysisResult]]:
         """统一的分析流水线：数据处理 → 统计计算 → AI分析 → HTML生成"""
 
@@ -832,7 +836,7 @@ class NewsAnalyzer:
             ai_result = self._run_ai_analysis(
                 stats, rss_items, mode, report_type, id_to_name,
                 current_results=data_source, schedule=schedule,
-                standalone_data=standalone_data
+                standalone_data=standalone_data, extra_data=extra_data,
             )
 
         # HTML生成（如果启用）
@@ -1459,6 +1463,13 @@ class NewsAnalyzer:
         time_info = self.ctx.format_time()
         word_groups, filter_words, global_filters = self.ctx.load_frequency_words()
 
+        # 获取额外实时数据（天气/金价/GitHub/微博热搜）
+        try:
+            extra_data = fetch_all_extra_data(results)
+        except Exception as e:
+            print(f"[额外数据] 获取失败，跳过: {e}")
+            extra_data = {}
+
         html_file = None
         stats = []
         ai_result = None
@@ -1501,6 +1512,7 @@ class NewsAnalyzer:
                     rss_new_items=rss_new_items,
                     standalone_data=standalone_data,
                     schedule=schedule,
+                    extra_data=extra_data,
                 )
 
                 combined_id_to_name = {**historical_id_to_name, **id_to_name}
@@ -1544,6 +1556,7 @@ class NewsAnalyzer:
                     rss_new_items=rss_new_items,
                     standalone_data=standalone_data,
                     schedule=schedule,
+                    extra_data=extra_data,
                 )
 
                 combined_id_to_name = {**historical_id_to_name, **id_to_name}
@@ -1571,6 +1584,7 @@ class NewsAnalyzer:
                     rss_new_items=rss_new_items,
                     standalone_data=standalone_data,
                     schedule=schedule,
+                    extra_data=extra_data,
                 )
         else:
             # incremental 模式：只使用当前抓取的数据
@@ -1592,6 +1606,7 @@ class NewsAnalyzer:
                 rss_new_items=rss_new_items,
                 standalone_data=standalone_data,
                 schedule=schedule,
+                extra_data=extra_data,
             )
 
         if html_file:

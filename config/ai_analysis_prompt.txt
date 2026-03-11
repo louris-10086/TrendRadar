@@ -17,6 +17,7 @@
 #   {news_content}        - 热榜新闻内容
 #   {rss_content}         - RSS 订阅内容 (需开启 ai_analysis.include_rss)
 #   {standalone_content}  - 独立展示区数据 (需开启 ai_analysis.include_standalone)
+#   {extra_data}          - 额外实时数据（天气/金价/GitHub/微博热搜）
 #
 # ═══════════════════════════════════════════════════════════════
 
@@ -164,6 +165,11 @@
 ## 独立展示区
 以下为独立展示的完整热榜/RSS 数据（不受关键词过滤），请按板块说明中 standalone_summaries 的要求处理。
 {standalone_content}
+
+## 额外实时数据
+以下为实时获取的补充信息，包含珠海金湾区天气、今日金价、GitHub 无人机热门项目、微博实时热搜。
+这些数据会直接展示给用户，你在分析时可适当引用（如金价异动影响相关行业、天气对无人机作业的影响等），但无需单独重复罗列。
+{extra_data}
 
 ---
 

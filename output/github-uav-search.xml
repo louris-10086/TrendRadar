@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title><![CDATA[GitHub 无人机仓库（按最近更新）]]></title>
+    <link>https://github.com/search?q=GitHub%20%E6%97%A0%E4%BA%BA%E6%9C%BA%E4%BB%93%E5%BA%93%EF%BC%88%E6%8C%89%E6%9C%80%E8%BF%91%E6%9B%B4%E6%96%B0%EF%BC%89&amp;type=repositories&amp;s=updated&amp;o=desc</link>
+    <description><![CDATA[GitHub 无人机仓库（按最近更新）]]></description>
+    <lastBuildDate>Wed, 11 Mar 2026 11:01:36 +0000</lastBuildDate>
+  <item>
+    <title><![CDATA[Jzoooooon/TrendRadar]]></title>
+    <link>https://github.com/Jzoooooon/TrendRadar</link>
+    <description><![CDATA[⭐10 | HTML | 更新:2026-03-11 | 🎯 告别信息过载，AI 助你看懂新闻资讯热点，简单的舆情监控分析 - 多平台热点聚合+基于 MCP 的AI分析工具。监控35个平台（抖音、知乎、B站、华尔街见闻、财联社等），智能筛选+自动推送+AI对话分析（用自然语言深度挖掘新闻：趋势追踪、情感分析、相似检索等13种工具）。支持企业微信/个人微信/飞书/钉钉/Telegram/邮件/ntfy/bark/slack 推送，1分钟手机通知，无需编程。]]></description>
+    <pubDate>Wed, 11 Mar 2026 11:01:36 +0000</pubDate>
+    <guid>https://github.com/Jzoooooon/TrendRadar</guid>
+  </item>
+  <item>
+    <title><![CDATA[CWQLYK/X0301-Drone]]></title>
+    <link>https://github.com/CWQLYK/X0301-Drone</link>
+    <description><![CDATA[⭐3 | C | 更新:2026-03-11 | 四轴无人机]]></description>
+    <pubDate>Wed, 11 Mar 2026 11:01:36 +0000</pubDate>
+    <guid>https://github.com/CWQLYK/X0301-Drone</guid>
+  </item>
+  <item>
+    <title><![CDATA[yanxian-ll/evaluate_forward_models]]></title>
+    <link>https://github.com/yanxian-ll/evaluate_forward_models</link>
+    <description><![CDATA[⭐1 | Python | 更新:2026-03-11 | 评估前馈重建模型在无人机视角下的重建质量]]></description>
+    <pubDate>Wed, 11 Mar 2026 11:01:36 +0000</pubDate>
+    <guid>https://github.com/yanxian-ll/evaluate_forward_models</guid>
+  </item>
+  <item>
+    <title><![CDATA[Nyarons44/TrendRadar]]></title>
+    <link>https://github.com/Nyarons44/TrendRadar</link>
+    <description><![CDATA[⭐10 | HTML | 更新:2026-03-11 | 🎯 告别信息过载，只看真正关心的新闻 - 多平台热点聚合工具，趋势分析工具，一键监控抖音、知乎、哔哩哔哩、今日头条、百度热搜、贴吧、微博、华尔街见闻、财联社等35个平台，智能关键词筛选，自动生成热点分析报告。支持企业微信、飞书、钉钉、Telegram、邮件、ntfy推送，30秒网页部署，1分钟手机通知，无需编程基础。也支持docker私人部署⭐ 让算法为你服务，而非被算法绑架]]></description>
+    <pubDate>Wed, 11 Mar 2026 11:01:36 +0000</pubDate>
+    <guid>https://github.com/Nyarons44/TrendRadar</guid>
+  </item>
+  <item>
+    <title><![CDATA[nicholas678/TrendRadar]]></title>
+    <link>https://github.com/nicholas678/TrendRadar</link>
+    <description><![CDATA[⭐5 | HTML | 更新:2026-03-11 | 🎯 告别信息过载，AI 助你看懂新闻资讯热点，简单的舆情监控分析 - 多平台热点聚合+基于 MCP 的AI分析工具。监控35个平台（抖音、知乎、B站、华尔街见闻、财联社等），智能筛选+自动推送+AI对话分析（用自然语言深度挖掘新闻：趋势追踪、情感分析、相似检索等13种工具）。支持企业微信/个人微信/飞书/钉钉/Telegram/邮件/ntfy/bark 推送，30秒网页部署，1分钟手机通知，无需编程。支持Docker部署⭐ 让算法为你服务，用AI理解热点]]></description>
+    <pubDate>Wed, 11 Mar 2026 11:01:36 +0000</pubDate>
+    <guid>https://github.com/nicholas678/TrendRadar</guid>
+  </item>
+  </channel>
+</rss>
